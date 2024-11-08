@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Ulasan;
+use App\Models\Denda;
 use App\Http\Resources\ResponsResource;
 use DB;
 
-class UlasanController extends Controller
+class DendaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,11 +15,12 @@ class UlasanController extends Controller
     public function index()
     {
         //
-        // $ulasan = DB::table('ulasan')->get();
-        $ulasan = Ulasan::join('pelanggan', 'ulasan.pelanggan_id', '=', 'pelanggan.id')
-        -> select('ulasan.komentar', 'pelanggan.nama as pelanggan')
+        // $denda = DB::table('denda')->get();
+        $denda = Denda::join('reservasi', 'denda.reservasi_id', '=', 'reservasi.id')
+        -> join('pelanggan', 'reservasi.pelanggan_id', '=', 'pelanggan.id')
+        -> select('denda.id', 'denda.keterangan', 'pelanggan.nama as pelanggan')
         -> get();
-        return new ResponsResource(true, 'Data Ulasan', $ulasan);
+        return new ResponsResource(true, 'Data Denda', $denda);
     }
 
     /**
