@@ -7,6 +7,7 @@ use App\Http\Controllers\UlasanController;
 use App\Http\Controllers\DendaController;
 use App\Http\Controllers\ReservasiController;
 use App\Http\Controllers\PembayaranController;
+use App\Http\Controllers\PromosiController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -26,3 +27,8 @@ Route::get('/reservasi', [ReservasiController::class, 'index']);
 
 //Pembayaran
 Route::get('/pembayaran', [PembayaranController::class, 'index']);
+
+//promosi
+Route::get('/promosi', [PromosiController::class, 'index']);
+
+
