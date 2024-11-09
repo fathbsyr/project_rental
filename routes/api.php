@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MobilController;
 use App\Http\Controllers\UlasanController;
 use App\Http\Controllers\DendaController;
+use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\ReservasiController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\PromosiController;
@@ -31,4 +32,5 @@ Route::get('/pembayaran', [PembayaranController::class, 'index']);
 //promosi
 Route::get('/promosi', [PromosiController::class, 'index']);
 
-
+//pelanggan
+Route::get('/pelanggan', [PelangganController::class, 'index']);
