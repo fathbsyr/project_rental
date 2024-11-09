@@ -6,6 +6,7 @@ use App\Http\Controllers\MobilController;
 use App\Http\Controllers\UlasanController;
 use App\Http\Controllers\DendaController;
 use App\Http\Controllers\ReservasiController;
+use App\Http\Controllers\PembayaranController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -17,8 +18,11 @@ Route::get('/mobil', [MobilController::class, 'index']);
 //ulasan
 Route::get('/ulasan', [UlasanController::class, 'index']);
 
-//denda 
+//denda
 Route::get('/denda', [DendaController::class, 'index']);
 
 //reservasi
 Route::get('/reservasi', [ReservasiController::class, 'index']);
+
+//Pembayaran
+Route::get('/pembayaran', [PembayaranController::class, 'index']);
