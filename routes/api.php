@@ -27,6 +27,8 @@ Route::get('/denda', [DendaController::class, 'index']);
 
 //reservasi
 Route::get('/reservasi', [ReservasiController::class, 'index']);
+Route::post('/reservasi/create', [ReservasiController::class, 'store']);
+Route::get('/reservasi/{id}', [ReservasiController::class, 'show']);
 
 //Pembayaran
 Route::get('/pembayaran', [PembayaranController::class, 'index']);
