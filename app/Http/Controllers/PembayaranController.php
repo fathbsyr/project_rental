@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Models\Pembayaran;
 use App\Http\Resources\ResponsResource;
@@ -14,8 +15,7 @@ class PembayaranController extends Controller
      */
     public function index()
     {
-        // $pembayaran = DB::table('pembayaran')->get();
-        $pembayaran = Pembayaran::join('reservasi', 'pembayaran.reservasi_id', '=', 'reservasi.id') 
+        $pembayaran = Pembayaran::join('reservasi', 'pembayaran.reservasi_id', '=', 'reservasi.id')
         -> join('pelanggan', 'reservasi.pelanggan_id', '=', 'pelanggan.id')
         -> join('promosi', 'pembayaran.promosi_id', '=', 'promosi.id')
         -> join('denda', 'pembayaran.denda_id', '=', 'denda.id')
@@ -42,7 +42,28 @@ class PembayaranController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'metode' => 'required|string|max:50',
+            'tanggal_bayar' => 'required|date',
+            'total_bayar' => 'required|numeric|min:0',
+            'status' => 'required|string|max:20',
+            'reservasi_id' => 'required|numeric:reservasi,id',
+            // 'promosi_id' => 'nullable|numeric:promosi,id',
+            // 'denda_id' => 'nullable|numeric:denda,id'
+        ]);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+        $pembayaran = Pembayaran::create([
+            'metode' => $request->metode,
+            'tanggal_bayar' => $request->tanggal_bayar,
+            'total_bayar' => $request->total_bayar,
+            'status' => $request->status,
+            'reservasi_id' => $request->reservasi_id,
+            'promosi_id' => $request->promosi_id,
+            'denda_id' => $request->denda_id
+        ]);
+        return new ResponsResource(true, 'Data Pembayaran Berhasil Ditambahkan', $pembayaran);
     }
 
     /**
@@ -50,7 +71,21 @@ class PembayaranController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $pembayaran = Pembayaran::join('reservasi', 'pembayaran.reservasi_id', '=', 'reservasi.id')
+            ->join('pelanggan', 'reservasi.pelanggan_id', '=', 'pelanggan.id')
+            ->join('promosi', 'pembayaran.promosi_id', '=', 'promosi.id')
+            ->join('denda', 'pembayaran.denda_id', '=', 'denda.id')
+            ->select('pembayaran.id', 'pembayaran.metode', 'pembayaran.tanggal_bayar',
+                     'pembayaran.total_bayar', 'pembayaran.status', 'pelanggan.nama as pelanggan',
+                     'promosi.diskon as diskon', 'denda.keterangan as denda')
+            ->where('pembayaran.id', $id)
+            ->get();
+
+        if ($pembayaran) {
+            return new ResponsResource(true, 'Detail Pembayaran', $pembayaran);
+        } else {
+            return new ResponsResource(false, 'Data Pembayaran Tidak Ditemukan', null);
+        }
     }
 
     /**
