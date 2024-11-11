@@ -36,3 +36,5 @@ Route::get('/promosi', [PromosiController::class, 'index']);
 
 //pelanggan
 Route::get('/pelanggan', [PelangganController::class, 'index']);
+Route::get('/pelanggan/{id}', [PelangganController::class, 'show']);
+Route::post('/pelanggan/create', [PelangganController::class, 'store']);

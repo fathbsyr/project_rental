@@ -6,6 +6,7 @@ use App\Http\Resources\ResponsResource;
 use App\Models\Pelanggan;
 use Illuminate\Http\Request;
 use DB;
+use Illuminate\Support\Facades\Validator;
 
 class PelangganController extends Controller
 {
@@ -32,6 +33,27 @@ class PelangganController extends Controller
     public function store(Request $request)
     {
         //
+        $validator = Validator::make($request->all(), [
+            'nama' =>'required|string|max:255',
+            'nik' =>'required|string|max:255',
+            'email' =>'required|string|email|max:255|unique:pelanggan',
+            'password' => 'nullable|string|min:8|confirmed',
+            'no_hp' =>'required|string|max:255',
+            'alamat_lengkap' =>'required|string|max:255'
+        ]);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        $pelanggan = Pelanggan::create([
+            'nama' => $request->nama,
+            'nik' => $request->nik,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+            'no_hp' => $request->no_hp,
+            'alamat_lengkap' => $request->alamat_lengkap
+        ]);
+        return new ResponsResource(true, 'Berhasil Menambahkan Pelanggan', $pelanggan);
     }
 
     /**
@@ -40,6 +62,11 @@ class PelangganController extends Controller
     public function show(string $id)
     {
         //
+        $pelanggan = Pelanggan::select('nama','nik', 'email', 'password', 'no_hp', 'alamat_lengkap')
+        -> where('pelanggan.id', '=', $id)
+        -> get();
+
+        return new ResponsResource(true, 'Detail Pelanggan', $pelanggan);
     }
 
     /**
