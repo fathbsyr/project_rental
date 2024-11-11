@@ -9,4 +9,5 @@ class Ulasan extends Model
     //
     protected $table = 'ulasan';
     protected $fillable = ['komentar', 'user_id'];
+    public $timestamps = false;
 }

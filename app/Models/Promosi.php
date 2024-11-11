@@ -9,4 +9,5 @@ class Promosi extends Model
     //
     protected $table = 'promosi';
     protected $fillable = ['diskon', 'mobil_id'];
+    public $timestamps = false;
 }

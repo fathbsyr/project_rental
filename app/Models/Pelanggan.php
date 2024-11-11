@@ -9,4 +9,5 @@ class Pelanggan extends Model
     //
     protected $table = 'pelanggan';
     protected $fillable = ['nama','nik', 'email', 'password', 'no_hp', 'alamat_lengkap'];
+    public $timestamps = false;
 }

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Mobil;
 use App\Http\Resources\ResponsResource;
 use DB;
+use Illuminate\Support\Facades\Validator;
 
 class MobilController extends Controller
 {
@@ -33,6 +34,24 @@ class MobilController extends Controller
     public function store(Request $request)
     {
         //
+        $validator = Validator::make($request->all(), [
+            'brand' => 'required',
+            'nama' => 'required',
+            'harga' => 'required|numeric|gte:10000000',
+            'ketersediaan' => 'required|in:tersedia,kosong',
+        ]);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        $mobil = Mobil::create([
+            'brand' => $request->brand,
+            'nama' => $request->nama,
+            'harga' => $request->harga,
+            'ketersediaan' => $request->ketersediaan,
+            'deskripsi' => $request->deskripsi
+        ]);
+        return new ResponsResource(true, 'Berhasil Menambahkan Mobil', $mobil);
     }
 
     /**
@@ -41,6 +60,11 @@ class MobilController extends Controller
     public function show(string $id)
     {
         //
+        $mobil = Mobil::select('brand', 'nama', 'harga', 'ketersediaan', 'deskripsi')
+        -> where('mobil.id', '=', $id)
+        -> get();
+
+        return new ResponsResource(true, 'Detail Mobil', $mobil);
     }
 
     /**

@@ -16,6 +16,8 @@ Route::get('/user', function (Request $request) {
 
 //mobil
 Route::get('/mobil', [MobilController::class, 'index']);
+Route::get('/mobil/{id}', [MobilController::class, 'show']);
+Route::post('/mobil/create', [MobilController::class, 'store']);
 
 //ulasan
 Route::get('/ulasan', [UlasanController::class, 'index']);
