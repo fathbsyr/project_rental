@@ -24,6 +24,8 @@ Route::get('/ulasan', [UlasanController::class, 'index']);
 
 //denda
 Route::get('/denda', [DendaController::class, 'index']);
+Route::get('/denda/{id}', [DendaController::class, 'show']);
+Route::post('/denda/create', [DendaController::class, 'store']);
 
 //reservasi
 Route::get('/reservasi', [ReservasiController::class, 'index']);
@@ -37,6 +39,8 @@ Route::post('/pembayaran/create', [PembayaranController::class, 'store']);
 
 //promosi
 Route::get('/promosi', [PromosiController::class, 'index']);
+Route::get('/promosi/{id}', [PromosiController::class, 'show']);
+Route::post('/promosi/create', [PromosiController::class, 'store']);
 
 //pelanggan
 Route::get('/pelanggan', [PelangganController::class, 'index']);

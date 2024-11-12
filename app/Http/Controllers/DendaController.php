@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Denda;
 use App\Http\Resources\ResponsResource;
+use Illuminate\Support\Facades\Validator;
 use DB;
 
 class DendaController extends Controller
@@ -12,7 +13,7 @@ class DendaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): ResponsResource
     {
         //
         // $denda = DB::table('denda')->get();
@@ -37,6 +38,18 @@ class DendaController extends Controller
     public function store(Request $request)
     {
         //
+        $validator = Validator::make($request->all(), [
+            'reservasi_id' => 'required|integer',
+        ]);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(),422);
+        }
+        
+        $denda = Denda::create([
+            'keterangan' => $request->keterangan,
+            'reservasi_id' => $request->reservasi_id,
+        ]);
+        return new ResponsResource(true, 'berhasil menambahkan data denda', $denda);
     }
 
     /**
@@ -45,6 +58,12 @@ class DendaController extends Controller
     public function show(string $id)
     {
         //
+        $denda = Denda::join('reservasi', 'denda.reservasi_id', '=', 'reservasi.id')
+    -> join('pelanggan', 'reservasi.pelanggan_id', '=', 'pelanggan.id')
+    -> select('denda.id', 'denda.keterangan', 'pelanggan.nama as pelanggan')
+    -> where('denda.id', $id)
+    -> get();
+        return new ResponsResource(true, 'Detail data denda', $denda);
     }
 
     /**
