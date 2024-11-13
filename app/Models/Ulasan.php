@@ -8,6 +8,6 @@ class Ulasan extends Model
 {
     //
     protected $table = 'ulasan';
-    protected $fillable = ['komentar', 'user_id'];
+    protected $fillable = ['komentar', 'pelanggan_id'];
     public $timestamps = false;
 }

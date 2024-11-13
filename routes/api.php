@@ -21,6 +21,8 @@ Route::post('/mobil/create', [MobilController::class, 'store']);
 
 //ulasan
 Route::get('/ulasan', [UlasanController::class, 'index']);
+Route::get('/ulasan/{id}', [UlasanController::class, 'show']);
+Route::post('/ulasan/create', [UlasanController::class, 'store']);
 
 //denda
 Route::get('/denda', [DendaController::class, 'index']);

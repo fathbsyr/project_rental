@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Ulasan;
 use App\Http\Resources\ResponsResource;
+use Illuminate\Support\Facades\Validator;
 use DB;
 
 class UlasanController extends Controller
@@ -36,6 +37,21 @@ class UlasanController extends Controller
     public function store(Request $request)
     {
         //
+        $validator = Validator::make($request->all(), [
+            'komentar' => 'required',
+            'pelanggan_id' => 'required|exists:pelanggan,id|integer'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(),422);
+        }
+
+        $ulasan = Ulasan::create([
+           'komentar' => $request->komentar,
+           'pelanggan_id' => $request->pelanggan_id
+        ]);
+        
+        return new ResponsResource(true, 'Data Ulasan Berhasil Ditambahkan', $ulasan);
     }
 
     /**
@@ -44,6 +60,11 @@ class UlasanController extends Controller
     public function show(string $id)
     {
         //
+        $ulasan = Ulasan::join('pelanggan', 'ulasan.pelanggan_id', '=', 'pelanggan.id')
+        -> select('ulasan.komentar', 'pelanggan.nama as pelanggan')
+        -> where('ulasan.id', $id)
+        -> get();
+        return new ResponsResource(true, 'Data Ulasan', $ulasan);
     }
 
     /**
