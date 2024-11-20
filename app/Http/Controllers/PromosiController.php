@@ -79,7 +79,23 @@ class PromosiController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        $validator = Validator::make($request->all(), [
+            'diskon' => 'required|regex:/^\d+(\.\d+)?$/',
+            'mobil_id' => 'required|integer',
+            
+        ]);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        $promosi = Promosi::whereId($id)->update([
+            'diskon' => $request->diskon,
+            'mobil_id' => $request->mobil_id,
+        ]);
+        
+        return new ResponsResource(true, 'Berhasil Mengubah Data Pomosi', $promosi);
     }
+    
 
     /**
      * Remove the specified resource from storage.
@@ -87,5 +103,8 @@ class PromosiController extends Controller
     public function destroy(string $id)
     {
         //
+        $promosi = promosi::whereId($id)->first();
+        $promosi->delete();
+        return new ResponsResource(true, 'Berhasil Menghapus Data promosi', $promosi);
     }
 }

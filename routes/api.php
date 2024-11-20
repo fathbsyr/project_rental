@@ -32,6 +32,8 @@ Route::delete('/ulasan/{id}', [UlasanController::class, 'destroy']);
 Route::get('/denda', [DendaController::class, 'index']);
 Route::get('/denda/{id}', [DendaController::class, 'show']);
 Route::post('/denda/create', [DendaController::class, 'store']);
+Route::put('/denda/{id}', [DendaController::class, 'update']);
+Route::delete('/denda/{id}', [DendaController::class, 'destroy']);
 
 //reservasi
 Route::get('/reservasi', [ReservasiController::class, 'index']);
@@ -47,6 +49,8 @@ Route::post('/pembayaran/create', [PembayaranController::class, 'store']);
 Route::get('/promosi', [PromosiController::class, 'index']);
 Route::get('/promosi/{id}', [PromosiController::class, 'show']);
 Route::post('/promosi/create', [PromosiController::class, 'store']);
+Route::put('/promosi/{id}', [PromosiController::class, 'update']);
+Route::delete('/promosi/{id}', [PromosiController::class, 'destroy']);
 
 //pelanggan
 Route::get('/pelanggan', [PelangganController::class, 'index']);

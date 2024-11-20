@@ -80,6 +80,20 @@ class DendaController extends Controller
     public function update(Request $request, string $id)
     {
         //
+            $validator = Validator::make($request->all(), [
+            'keterangan' => 'required',
+            'reservasi_id' => $request->reservasi_id,
+        ]);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        $denda = Denda::whereId($id)->update([
+            'keterangan' => $request->keterangan,
+            'reservasi_id' => $request->reservasi_id,
+        ]);
+        
+        return new ResponsResource(true, 'Berhasil Mengubah Data denda', $denda);
     }
 
     /**
@@ -88,5 +102,8 @@ class DendaController extends Controller
     public function destroy(string $id)
     {
         //
+        $denda = Denda::whereId($id)->first();
+        $denda->delete();
+        return new ResponsResource(true, 'Berhasil Menghapus Data denda', $denda);
     }
 }
