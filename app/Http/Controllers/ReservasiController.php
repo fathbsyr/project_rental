@@ -85,6 +85,25 @@ class ReservasiController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        $validator = Validator::make($request->all(), [
+            'tanggal_mulai' => 'required|date',
+            'tanggal_akhir' => 'required|date|after_or_equal:tanggal_mulai',
+            'status' => 'required|string|in:pending,cancel,complete',
+            'pelanggan_id' => 'required|exists:pelanggan,id',
+            'mobil_id' => 'required|exists:mobil,id',
+        ]);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        $reservasi = Reservasi::whereId($id)->update([
+            'tanggal_mulai' => $request->tanggal_mulai,
+            'tanggal_akhir' => $request->tanggal_akhir,
+            'status' => $request->status,
+            'pelanggan_id' => $request->pelanggan_id,
+            'mobil_id' => $request->mobil_id
+        ]);
+        return new ResponsResource(true, 'Berhasil Mengubah Data Reservasi', $reservasi);
     }
 
     /**
@@ -93,5 +112,8 @@ class ReservasiController extends Controller
     public function destroy(string $id)
     {
         //
+        $reservasi = Reservasi::whereId($id)->first();
+        $reservasi->delete();
+        return new ResponsResource(true, 'Berhasil Menghapus Data Reservasi', $reservasi);
     }
 }
