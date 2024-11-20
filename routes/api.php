@@ -39,11 +39,15 @@ Route::delete('/denda/{id}', [DendaController::class, 'destroy']);
 Route::get('/reservasi', [ReservasiController::class, 'index']);
 Route::post('/reservasi/create', [ReservasiController::class, 'store']);
 Route::get('/reservasi/{id}', [ReservasiController::class, 'show']);
+Route::put('/reservasi/{id}', [ReservasiController::class, 'update']);
+Route::delete('/reservasi/{id}', [ReservasiController::class, 'destroy']);
 
 //Pembayaran
 Route::get('/pembayaran', [PembayaranController::class, 'index']);
 Route::get('/pembayaran/{id}', [PembayaranController::class, 'show']);
 Route::post('/pembayaran/create', [PembayaranController::class, 'store']);
+Route::put('/pembayaran/{id}', [PembayaranController::class, 'update']);
+Route::delete('/pembayaran/{id}', [PembayaranController::class, 'destroy']);
 
 //promosi
 Route::get('/promosi', [PromosiController::class, 'index']);
@@ -56,3 +60,5 @@ Route::delete('/promosi/{id}', [PromosiController::class, 'destroy']);
 Route::get('/pelanggan', [PelangganController::class, 'index']);
 Route::get('/pelanggan/{id}', [PelangganController::class, 'show']);
 Route::post('/pelanggan/create', [PelangganController::class, 'store']);
+Route::put('/pelanggan/{id}', [PelangganController::class, 'update']);
+Route::delete('/pelanggan/{id}', [PelangganController::class, 'destroy']);
