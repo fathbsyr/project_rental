@@ -18,7 +18,7 @@ class UlasanController extends Controller
         //
         // $ulasan = DB::table('ulasan')->get();
         $ulasan = Ulasan::join('pelanggan', 'ulasan.pelanggan_id', '=', 'pelanggan.id')
-        -> select('ulasan.komentar', 'pelanggan.nama as pelanggan')
+        -> select('ulasan.id','ulasan.komentar', 'pelanggan.nama as pelanggan')
         -> get();
         return new ResponsResource(true, 'Data Ulasan', $ulasan);
     }
@@ -81,6 +81,21 @@ class UlasanController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        $validator = Validator::make($request->all(), [
+            'komentar' => 'required',
+            'pelanggan_id' => 'required|exists:pelanggan,id|integer'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(),422);
+        }
+
+        $ulasan = Ulasan::whereId($id)->update([
+           'komentar' => $request->komentar,
+           'pelanggan_id' => $request->pelanggan_id
+        ]);
+        
+        return new ResponsResource(true, 'Data Ulasan Berhasil Diubah', $ulasan);
     }
 
     /**
@@ -89,5 +104,8 @@ class UlasanController extends Controller
     public function destroy(string $id)
     {
         //
+        $ulasan = Ulasan::whereId($id)->first();
+        $ulasan->delete();
+        return new ResponsResource(true, 'Berhasil Menghapus Data Ulasan', $ulasan);
     }
 }

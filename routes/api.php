@@ -25,6 +25,8 @@ Route::delete('/mobil/{id}', [MobilController::class, 'destroy']);
 Route::get('/ulasan', [UlasanController::class, 'index']);
 Route::get('/ulasan/{id}', [UlasanController::class, 'show']);
 Route::post('/ulasan/create', [UlasanController::class, 'store']);
+Route::put('/ulasan/{id}', [UlasanController::class, 'update']);
+Route::delete('/ulasan/{id}', [UlasanController::class, 'destroy']);
 
 //denda
 Route::get('/denda', [DendaController::class, 'index']);
