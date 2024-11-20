@@ -37,7 +37,7 @@ class PelangganController extends Controller
             'nama' =>'required|string|max:255',
             'nik' =>'required|string|max:255',
             'email' =>'required|string|email|max:255|unique:pelanggan',
-            'password' => 'nullable|string|min:8|confirmed',
+            'password' => 'nullable|string|min:8',
             'no_hp' =>'required|string|max:255',
             'alamat_lengkap' =>'required|string|max:255'
         ]);
@@ -49,7 +49,7 @@ class PelangganController extends Controller
             'nama' => $request->nama,
             'nik' => $request->nik,
             'email' => $request->email,
-            'password' => bcrypt($request->password),
+            'password' => $request->password,
             'no_hp' => $request->no_hp,
             'alamat_lengkap' => $request->alamat_lengkap
         ]);
@@ -83,6 +83,27 @@ class PelangganController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        $validator = Validator::make($request->all(), [
+            'nama' =>'required|string|max:255',
+            'nik' =>'required|string|max:255',
+            'email' =>'required|string|email|max:255|unique:pelanggan',
+            'password' => 'nullable|string|min:8',
+            'no_hp' =>'required|string|max:255',
+            'alamat_lengkap' =>'required|string|max:255'
+        ]);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        $pelanggan = Pelanggan::whereId($id)->update([
+            'nama' => $request->nama,
+            'nik' => $request->nik,
+            'email' => $request->email,
+            'password' => $request->password,
+            'no_hp' => $request->no_hp,
+            'alamat_lengkap' => $request->alamat_lengkap
+        ]);
+        return new ResponsResource(true, 'Berhasil Mengubah Data Pelanggan', $pelanggan);
     }
 
     /**
@@ -91,5 +112,8 @@ class PelangganController extends Controller
     public function destroy(string $id)
     {
         //
+        $pelanggan = Pelanggan::whereId($id)->first();
+        $pelanggan->delete();
+        return new ResponsResource(true, 'Berhasil Menghapus Data Pelanggan', $pelanggan);
     }
 }
