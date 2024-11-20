@@ -16,7 +16,8 @@ class MobilController extends Controller
     public function index()
     {
         //
-        $mobil = DB::table('mobil')->get();
+        // $mobil = DB::table('mobil')->get();
+        $mobil = Mobil::all();
         return new ResponsResource(true, 'Data Mobil', $mobil);
     }
 
@@ -81,6 +82,25 @@ class MobilController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        $validator = Validator::make($request->all(), [
+            'brand' => 'required',
+            'nama' => 'required',
+            'harga' => 'required|numeric|gte:10000000',
+            'ketersediaan' => 'required|in:tersedia,kosong',
+        ]);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        $mobil = Mobil::whereId($id)->update([
+            'brand' => $request->brand,
+            'nama' => $request->nama,
+            'harga' => $request->harga,
+            'ketersediaan' => $request->ketersediaan,
+            'deskripsi' => $request->deskripsi
+        ]);
+        
+        return new ResponsResource(true, 'Berhasil Mengubah Data Mobil', $mobil);
     }
 
     /**
@@ -89,5 +109,8 @@ class MobilController extends Controller
     public function destroy(string $id)
     {
         //
+        $mobil = Mobil::whereId($id)->first();
+        $mobil->delete();
+        return new ResponsResource(true, 'Berhasil Menghapus Data Mobil', $mobil);
     }
 }
