@@ -9,10 +9,14 @@ use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\ReservasiController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\PromosiController;
+use App\Http\Controllers\Api\AuthAdminController;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+// Route::get('/user', function (Request $request) {
+//     return $request->user();
+// })->middleware('auth:sanctum');
+
+Route::post('/admin/register', [AuthAdminController::class, 'register']);
+Route::post('/admin/login', [AuthAdminController::class, 'login']);
 
 //mobil
 Route::get('/mobil', [MobilController::class, 'index']);
