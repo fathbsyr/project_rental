@@ -10,27 +10,45 @@ use App\Http\Controllers\ReservasiController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\PromosiController;
 use App\Http\Controllers\Api\AuthAdminController;
+use App\Http\Controllers\Api\AuthPelangganController;
 
 // Route::get('/user', function (Request $request) {
 //     return $request->user();
 // })->middleware('auth:sanctum');
 
-Route::post('/admin/register', [AuthAdminController::class, 'register']);
+//login admin
+Route::post('/66fhi85dhvye$@!/register', [AuthAdminController::class, 'register']);
 Route::post('/admin/login', [AuthAdminController::class, 'login']);
+
+//login pelanggan
+Route::post('/register', [AuthPelangganController::class, 'register']);
+Route::post('/login', [AuthPelangganController::class, 'login']);
+
+Route::middleware(['auth:admin', 'admin-only'])->group(function () {
+    Route::put('/mobil/{id}', [MobilController::class, 'update']);
+});
+
+// Middleware untuk pelanggan
+Route::middleware(['auth:pelanggan', 'pelanggan-only'])->group(function () {
+    Route::get('/ulasan', [UlasanController::class, 'index']);
+    Route::get('/ulasan/{id}', [UlasanController::class, 'show']);
+    Route::post('/ulasan/create', [UlasanController::class, 'store']);
+    Route::put('/ulasan/{id}', [UlasanController::class, 'update']);
+    Route::delete('/ulasan/{id}', [UlasanController::class, 'destroy']);
+});
 
 //mobil
 Route::get('/mobil', [MobilController::class, 'index']);
 Route::get('/mobil/{id}', [MobilController::class, 'show']);
 Route::post('/mobil/create', [MobilController::class, 'store']);
-Route::put('/mobil/{id}', [MobilController::class, 'update']);
 Route::delete('/mobil/{id}', [MobilController::class, 'destroy']);
 
 //ulasan
-Route::get('/ulasan', [UlasanController::class, 'index']);
-Route::get('/ulasan/{id}', [UlasanController::class, 'show']);
-Route::post('/ulasan/create', [UlasanController::class, 'store']);
-Route::put('/ulasan/{id}', [UlasanController::class, 'update']);
-Route::delete('/ulasan/{id}', [UlasanController::class, 'destroy']);
+// // Route::get('/ulasan', [UlasanController::class, 'index']);
+// Route::get('/ulasan/{id}', [UlasanController::class, 'show']);
+// Route::post('/ulasan/create', [UlasanController::class, 'store']);
+// Route::put('/ulasan/{id}', [UlasanController::class, 'update']);
+// Route::delete('/ulasan/{id}', [UlasanController::class, 'destroy']);
 
 //denda
 Route::get('/denda', [DendaController::class, 'index']);

@@ -40,6 +40,15 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+
+        'admin' => [
+            'driver' => 'sanctum',
+            'provider' => 'admins',
+        ],
+        'pelanggan' => [
+            'driver' => 'sanctum',
+            'provider' => 'pelanggans',
+        ],
     ],
 
     /*
@@ -69,6 +78,14 @@ return [
         //     'driver' => 'database',
         //     'table' => 'users',
         // ],
+        'admins' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Admin::class,
+        ],
+        'pelanggans' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Pelanggan::class,
+        ], 
     ],
 
     /*

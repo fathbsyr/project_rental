@@ -1,0 +1,69 @@
+<?php
+
+namespace App\Http\Controllers\Api;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use App\Models\Pelanggan;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+
+class AuthPelangganController extends Controller
+{
+    //
+    public function register(Request $request) {
+
+        $validator = Validator::make($request->all(), [
+            'nama' =>'required|string|max:255',
+            'nik' =>'required|string|max:255',
+            'email' =>'required|string|email|max:255|unique:pelanggan',
+            'password' => 'nullable|string|min:8',
+            'no_hp' =>'required|string|max:255',
+            'alamat_lengkap' =>'required|string|max:255'
+        ]);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+        
+        $input = [
+            "nama" => $request->nama,
+            "nik" => $request->nik,
+            "email" => $request->email,
+            "password" => Hash::make($request->password),
+            "no_hp" => $request->no_hp,
+            "alamat_lengkap" => $request->alamat_lengkap
+        ];
+
+        $admin = Pelanggan::create($input);
+
+        return response()->json([
+            "status" => "success",
+            "message" => "Register Success", 
+        ]);
+    }
+
+    public function login(Request $request) {
+        $input = [
+            "email" => $request->email,
+            "password" => $request->password,
+        ];
+        
+        $pelanggan = Pelanggan::where("email", $input["email"])->first();
+        if ($pelanggan && Hash::check($input["password"], $pelanggan->password)) {
+            $token = $pelanggan->createToken('token', ['pelanggan'])->plainTextToken;
+            return response()->json([
+                "code" => 200,
+                "status" => "success",
+                "message" => "Login Success",
+                "token" => $token
+            ]);
+        } else {
+            return response()->json([
+                "code" => 401,
+                "status" => "error",
+                "message" => "Login Failed"
+            ]);
+        }
+    }
+}
