@@ -6,6 +6,7 @@ use App\Http\Resources\ResponsResource;
 use App\Models\Pelanggan;
 use Illuminate\Http\Request;
 use DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class PelangganController extends Controller
@@ -37,7 +38,7 @@ class PelangganController extends Controller
             'nama' =>'required|string|max:255',
             'nik' =>'required|string|max:255',
             'email' =>'required|string|email|max:255|unique:pelanggan',
-            'password' => 'nullable|string|min:8',
+            'password' => 'nullable|min:8',
             'no_hp' =>'required|string|max:255',
             'alamat_lengkap' =>'required|string|max:255'
         ]);
@@ -49,7 +50,7 @@ class PelangganController extends Controller
             'nama' => $request->nama,
             'nik' => $request->nik,
             'email' => $request->email,
-            'password' => $request->password,
+            'password' => Hash::make($request->password),
             'no_hp' => $request->no_hp,
             'alamat_lengkap' => $request->alamat_lengkap
         ]);
@@ -86,8 +87,7 @@ class PelangganController extends Controller
         $validator = Validator::make($request->all(), [
             'nama' =>'required|string|max:255',
             'nik' =>'required|string|max:255',
-            'email' =>'required|string|email|max:255|unique:pelanggan',
-            'password' => 'nullable|string|min:8',
+            'password' => 'nullable|min:8',
             'no_hp' =>'required|string|max:255',
             'alamat_lengkap' =>'required|string|max:255'
         ]);
@@ -99,7 +99,7 @@ class PelangganController extends Controller
             'nama' => $request->nama,
             'nik' => $request->nik,
             'email' => $request->email,
-            'password' => $request->password,
+            'password' => Hash::make($request->password),
             'no_hp' => $request->no_hp,
             'alamat_lengkap' => $request->alamat_lengkap
         ]);

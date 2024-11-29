@@ -17,9 +17,6 @@ class UlasanController extends Controller
     {
         //
         // $ulasan = DB::table('ulasan')->get();
-        if (!auth('pelanggan')->check()) {
-            return response()->json(['message' => 'Unauthorized'], 403);
-        }
         $ulasan = Ulasan::join('pelanggan', 'ulasan.pelanggan_id', '=', 'pelanggan.id')
         -> select('ulasan.id','ulasan.komentar', 'pelanggan.nama as pelanggan')
         -> get();
