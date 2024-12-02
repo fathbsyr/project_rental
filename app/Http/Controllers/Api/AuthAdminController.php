@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\Admin;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\Validator;
 
 class AuthAdminController extends Controller
 {
@@ -48,6 +50,50 @@ class AuthAdminController extends Controller
                 "message" => "Login Failed"
             ]);
         }
+    }
+
+    public function forgotPassword(Request $request)
+    {
+        $request->validate(['email' => 'required|email']);
+
+        $status = Password::broker('admin')->sendResetLink(
+            $request->only('email')
+        );
+
+        return $status === Password::RESET_LINK_SENT
+            ? response()->json(['message' => __($status)])
+            : response()->json(['message' => __($status)], 500);
+    }
+
+    public function resetPassword(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|min:8|confirmed',
+            'token' => 'required',
+        ]);
+
+        $status = Password::broker('admin')->reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function ($pelanggan, $password) {
+                $pelanggan->forceFill([
+                    'password' => Hash::make($password),
+                ])->save();
+            }
+        );
+
+        return $status === Password::PASSWORD_RESET
+            ? response()->json(['message' => __($status)])
+            : response()->json(['message' => __($status)], 500);
+    }
+
+    public function showResetForm(Request $request, $token)
+    {
+        // Return a JSON response or a view for the reset password form
+        return response()->json([
+            'token' => $token,
+            'email' => $request->email,
+        ]);
     }
 }    
     
