@@ -17,7 +17,7 @@ use App\Http\Controllers\Api\AuthPelangganController;
 // })->middleware('auth:sanctum');
 
 //autentikasi admin
-Route::post('/temp4tr3g18t3ratminr3ntal/register', [AuthAdminController::class, 'register']);
+// Route::post('/temp4tr3g18t3ratminr3ntal/register', [AuthAdminController::class, 'register']);
 Route::post('/admin/login', [AuthAdminController::class, 'login']);
 Route::post('/admin/forgot-password', [AuthAdminController::class, 'forgotPassword']);
 Route::post('/admin/reset-password', [AuthAdminController::class, 'resetPassword']);
@@ -40,8 +40,6 @@ Route::middleware(['auth:admin', 'admin-only'])->group(function () {
     Route::delete('/ulasan/{id}', [UlasanController::class, 'destroy']);
 
     //mobil
-    Route::get('/mobil', [MobilController::class, 'index']);
-    Route::get('/mobil/{id}', [MobilController::class, 'show']);
     Route::post('/mobil/create', [MobilController::class, 'store']);
     Route::put('/mobil/{id}', [MobilController::class, 'update']);
     Route::delete('/mobil/{id}', [MobilController::class, 'destroy']);
@@ -61,8 +59,6 @@ Route::middleware(['auth:admin', 'admin-only'])->group(function () {
     Route::delete('/pembayaran/{id}', [PembayaranController::class, 'destroy']);
 
     //promosi
-    Route::get('/promosi', [PromosiController::class, 'index']);
-    Route::get('/promosi/{id}', [PromosiController::class, 'show']);
     Route::post('/promosi/create', [PromosiController::class, 'store']);
     Route::put('/promosi/{id}', [PromosiController::class, 'update']);
     Route::delete('/promosi/{id}', [PromosiController::class, 'destroy']);
@@ -85,8 +81,6 @@ Route::middleware(['auth:admin', 'admin-only'])->group(function () {
 // Middleware untuk pelanggan
 Route::middleware(['auth:pelanggan', 'pelanggan-only'])->group(function () {
     //ulasan
-    Route::get('/ulasan', [UlasanController::class, 'index']);
-    Route::get('/ulasan/{id}', [UlasanController::class, 'show']);
     Route::post('/ulasan/create', [UlasanController::class, 'store']);
     Route::put('/ulasan/{id}', [UlasanController::class, 'update']);
     Route::delete('/ulasan/{id}', [UlasanController::class, 'destroy']);
@@ -103,3 +97,12 @@ Route::middleware(['auth:pelanggan', 'pelanggan-only'])->group(function () {
     Route::get('/pembayaran/{id}', [PembayaranController::class, 'show']);
     Route::post('/pembayaran/create', [PembayaranController::class, 'store']);
 });
+
+Route::get('/mobil', [MobilController::class, 'index']);
+Route::get('/mobil/{id}', [MobilController::class, 'show']);
+
+Route::get('/ulasan', [UlasanController::class, 'index']);
+Route::get('/ulasan/{id}', [UlasanController::class, 'show']);
+
+Route::get('/promosi', [PromosiController::class, 'index']);
+Route::get('/promosi/{id}', [PromosiController::class, 'show']);
