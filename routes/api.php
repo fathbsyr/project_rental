@@ -45,8 +45,6 @@ Route::middleware(['auth:admin', 'admin-only'])->group(function () {
     Route::delete('/mobil/{id}', [MobilController::class, 'destroy']);
 
     //denda
-    Route::get('/denda', [DendaController::class, 'index']);
-    Route::get('/denda/{id}', [DendaController::class, 'show']);
     Route::post('/denda/create', [DendaController::class, 'store']);
     Route::put('/denda/{id}', [DendaController::class, 'update']);
     Route::delete('/denda/{id}', [DendaController::class, 'destroy']);
@@ -106,3 +104,6 @@ Route::get('/ulasan/{id}', [UlasanController::class, 'show']);
 
 Route::get('/promosi', [PromosiController::class, 'index']);
 Route::get('/promosi/{id}', [PromosiController::class, 'show']);
+
+Route::get('/denda', [DendaController::class, 'index']);
+Route::get('/denda/{id}', [DendaController::class, 'show']);
