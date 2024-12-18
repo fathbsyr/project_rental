@@ -107,3 +107,9 @@ Route::get('/promosi/{id}', [PromosiController::class, 'show']);
 
 Route::get('/denda', [DendaController::class, 'index']);
 Route::get('/denda/{id}', [DendaController::class, 'show']);
+
+Route::get('/reservasi', [ReservasiController::class, 'index']);
+Route::get('/reservasi/{id}', [ReservasiController::class, 'show']);
+
+Route::get('/pembayaran', [PembayaranController::class, 'index']);
+Route::get('/pembayaran/{id}', [PembayaranController::class, 'show']);
