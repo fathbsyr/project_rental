@@ -42,10 +42,8 @@ class AuthAdminController extends Controller
                 "status" => "success",
                 "message" => "Login Success",
                 "token" => $token,
-                "data" => [
-                    "name" => $admin->name,
-                    "email" => $admin->email
-                ]
+                "name" => $admin->name,
+                "email" => $admin->email
             ]);
         } else {
             return response()->json([
