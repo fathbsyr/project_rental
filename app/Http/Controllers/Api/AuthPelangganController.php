@@ -59,7 +59,7 @@ class AuthPelangganController extends Controller
                 "message" => "Login Success",
                 "token" => $token,
                 "data" => [
-                    "name" => $pelanggan->name,
+                    "name" => $pelanggan->nama,
                     "email" => $pelanggan->email
                 ]
             ]);
