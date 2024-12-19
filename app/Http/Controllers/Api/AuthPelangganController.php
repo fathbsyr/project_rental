@@ -59,7 +59,8 @@ class AuthPelangganController extends Controller
                 "message" => "Login Success",
                 "token" => $token,
                 "name" => $pelanggan->nama,
-                "email" => $pelanggan->email
+                "email" => $pelanggan->email,
+                "role"=> "pelanggan"
             ]);
         } else {
             return response()->json([
