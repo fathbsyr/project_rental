@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Models\Pembayaran;
+use App\Models\Reservasi;
 use App\Http\Resources\ResponsResource;
 use DB;
 
@@ -48,29 +49,43 @@ class PembayaranController extends Controller
      */
     public function store(Request $request)
     {
+        // Validasi data input
         $validator = Validator::make($request->all(), [
             'metode' => 'required|string|max:50',
             'tanggal_bayar' => 'required|date',
             'total_bayar' => 'required|numeric|min:0',
             'status' => 'required|string|max:20',
-            'reservasi_id' => 'required|exists:reservasi,id',
-            // 'promosi_id' => 'nullable|numeric:promosi,id',
-            // 'denda_id' => 'nullable|numeric:denda,id'
+            'reservasi_id' => 'required|date',  // Di sini tetap validasi tanggal
+            'promosi_id' => 'nullable|numeric',
+            'denda_id' => 'nullable|numeric'
         ]);
+    
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
+    
+        // Cari reservasi berdasarkan tanggal_mulai
+        $reservasi = Reservasi::where('tanggal_mulai', $request->reservasi_id)->first();
+    
+        // Jika reservasi tidak ditemukan
+        if (!$reservasi) {
+            return response()->json(['error' => 'Reservasi tidak ditemukan'], 404);
+        }
+    
+        // Simpan pembayaran dengan reservasi_id yang benar
         $pembayaran = Pembayaran::create([
             'metode' => $request->metode,
             'tanggal_bayar' => $request->tanggal_bayar,
             'total_bayar' => $request->total_bayar,
             'status' => $request->status,
-            'reservasi_id' => $request->reservasi_id,
+            'reservasi_id' => $reservasi->id,  // Gunakan id reservasi yang ditemukan
             'promosi_id' => $request->promosi_id,
             'denda_id' => $request->denda_id
         ]);
+    
         return new ResponsResource(true, 'Data Pembayaran Berhasil Ditambahkan', $pembayaran);
     }
+    
 
     /**
      * Display the specified resource.
