@@ -15,7 +15,8 @@ return Application::configure(basePath: dirname(__DIR__))
         //
         $middleware->alias([
            'admin-only' => \App\Http\Middleware\Admin::class,
-           'pelanggan-only' => \App\Http\Middleware\Pelanggan::class, 
+           'pelanggan-only' => \App\Http\Middleware\Pelanggan::class,
+           'admin-pelanggan' => \App\Http\Middleware\AdminOrPelanggan::class, 
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

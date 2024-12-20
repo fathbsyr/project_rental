@@ -77,7 +77,7 @@ Route::middleware(['auth:admin', 'admin-only'])->group(function () {
 });
 
 // Middleware untuk pelanggan
-Route::middleware(['auth:pelanggan', 'pelanggan-only'])->group(function () {
+Route::middleware(['admin-pelanggan'])->group(function () {
     //ulasan
     Route::post('/ulasan/create', [UlasanController::class, 'store']);
     Route::put('/ulasan/{id}', [UlasanController::class, 'update']);

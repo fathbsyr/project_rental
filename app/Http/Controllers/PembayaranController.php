@@ -53,7 +53,7 @@ class PembayaranController extends Controller
             'tanggal_bayar' => 'required|date',
             'total_bayar' => 'required|numeric|min:0',
             'status' => 'required|string|max:20',
-            'reservasi_id' => 'required|numeric:reservasi,id',
+            'reservasi_id' => 'required|exists:reservasi,id',
             // 'promosi_id' => 'nullable|numeric:promosi,id',
             // 'denda_id' => 'nullable|numeric:denda,id'
         ]);
