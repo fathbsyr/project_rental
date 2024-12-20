@@ -67,13 +67,6 @@ Route::middleware(['auth:admin', 'admin-only'])->group(function () {
     Route::post('/pelanggan/create', [PelangganController::class, 'store']);
     Route::put('/pelanggan/{id}', [PelangganController::class, 'update']);
     Route::delete('/pelanggan/{id}', [PelangganController::class, 'destroy']);
-
-    //reservasi
-    Route::get('/reservasi', [ReservasiController::class, 'index']);
-    Route::post('/reservasi/create', [ReservasiController::class, 'store']);
-    Route::get('/reservasi/{id}', [ReservasiController::class, 'show']);
-    Route::put('/reservasi/{id}', [ReservasiController::class, 'update']);
-    Route::delete('/reservasi/{id}', [ReservasiController::class, 'destroy']);
 });
 
 // Middleware untuk pelanggan
