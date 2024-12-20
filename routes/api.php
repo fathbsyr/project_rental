@@ -17,7 +17,7 @@ use App\Http\Controllers\Api\AuthPelangganController;
 // })->middleware('auth:sanctum');
 
 //autentikasi admin
-// Route::post('/temp4tr3g18t3ratminr3ntal/register', [AuthAdminController::class, 'register']);
+Route::post('/temp4tr3g18t3ratminr3ntal/register', [AuthAdminController::class, 'register']);
 Route::post('/admin/login', [AuthAdminController::class, 'login']);
 Route::post('/admin/forgot-password', [AuthAdminController::class, 'forgotPassword']);
 Route::post('/admin/reset-password', [AuthAdminController::class, 'resetPassword']);

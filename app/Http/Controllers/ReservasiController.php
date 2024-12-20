@@ -53,7 +53,7 @@ class ReservasiController extends Controller
             'tanggal_akhir' => $request->tanggal_akhir,
             'status' => $request->status,
             'pelanggan_id' => $request->pelanggan_id,
-            'mobil_id' => $request->mobil_id
+            'mobil_id' => $request->mobil_id    
         ]);
         return new ResponsResource(true, 'Berhasil Menambahkan Reservasi', $reservasi);
     }
