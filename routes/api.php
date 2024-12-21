@@ -88,10 +88,13 @@ Route::middleware(['admin-pelanggan'])->group(function () {
     Route::put('/reservasi/{id}', [ReservasiController::class, 'update']);
     Route::delete('/reservasi/{id}', [ReservasiController::class, 'destroy']);
 
-    //pembayaran 
+    //pembayaran
     Route::get('/pembayaran', [PembayaranController::class, 'index']);
     Route::get('/pembayaran/{id}', [PembayaranController::class, 'show']);
     Route::post('/pembayaran/create', [PembayaranController::class, 'store']);
+    Route::put('/pembayaran/{id}', [PembayaranController::class, 'update']);
+    Route::delete('/pembayaran/{id}', [PembayaranController::class, 'destroy']);
+    Route::get('/pembayaran-edit/{id}', [PembayaranController::class, 'edit']);
 });
 
 Route::get('/mobil', [MobilController::class, 'index']);

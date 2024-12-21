@@ -60,11 +60,11 @@ class PembayaranController extends Controller
             'promosi_id' => 'nullable|numeric',
             'denda_id' => 'nullable|numeric'
         ]);
-    
+
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
-    
+
         // Simpan pembayaran dengan reservasi_id yang benar
         $pembayaran = Pembayaran::create([
             'metode' => $request->metode,
@@ -75,10 +75,10 @@ class PembayaranController extends Controller
             'promosi_id' => $request->promosi_id,
             'denda_id' => $request->denda_id
         ]);
-    
+
         return new ResponsResource(true, 'Data Pembayaran Berhasil Ditambahkan', $pembayaran);
     }
-    
+
 
     /**
      * Display the specified resource.
@@ -107,7 +107,21 @@ class PembayaranController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $pembayaran = Pembayaran::join('reservasi', 'pembayaran.reservasi_id', '=', 'reservasi.id')
+            ->join('pelanggan', 'reservasi.pelanggan_id', '=', 'pelanggan.id')
+            ->join('promosi', 'pembayaran.promosi_id', '=', 'promosi.id')
+            ->join('denda', 'pembayaran.denda_id', '=', 'denda.id')
+            ->select('pembayaran.id', 'pembayaran.metode', 'pembayaran.tanggal_bayar',
+                     'pembayaran.total_bayar', 'pembayaran.status', 'pelanggan.nama as pelanggan',
+                     'promosi.diskon as diskon', 'denda.keterangan as denda')
+            ->where('pembayaran.id', $id)
+            ->get();
+
+        if ($pembayaran) {
+            return new ResponsResource(true, 'Detail Pembayaran', $pembayaran);
+        } else {
+            return new ResponsResource(false, 'Data Pembayaran Tidak Ditemukan', null);
+        }
     }
 
     /**
