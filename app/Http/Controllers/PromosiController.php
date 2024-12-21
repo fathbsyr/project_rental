@@ -18,7 +18,7 @@ class PromosiController extends Controller
         //
         // $promosi = DB::table('promosi')->get();
         $promosi = Promosi::join('mobil', 'promosi.mobil_id', '=', 'mobil.id')
-        -> select('promosi.id', 'promosi.diskon', 'mobil.nama as mobil')
+        -> select('promosi.*', 'mobil.nama as mobil')
         -> get(); 
         return new ResponsResource(true, 'Data Promosi', $promosi);
     }
@@ -71,6 +71,11 @@ class PromosiController extends Controller
     public function edit(string $id)
     {
         //
+        $promosi = Promosi::join('mobil', 'promosi.mobil_id', '=', 'mobil.id')
+        -> select('promosi.id', 'promosi.diskon', 'promosi.mobil_id', 'mobil.nama')
+        -> where('promosi.id', $id)
+        -> get(); 
+        return new ResponsResource(true, 'Data Promosi', $promosi);
     }
 
     /**

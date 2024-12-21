@@ -8,6 +8,6 @@ class Denda extends Model
 {
     //
     protected $table = 'denda';
-    protected $fillable = ['deskripsi', 'reservasi_id'];
+    protected $fillable = ['keterangan', 'reservasi_id'];
     public $timestamps = false;
 }

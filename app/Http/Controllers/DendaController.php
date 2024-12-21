@@ -20,7 +20,7 @@ class DendaController extends Controller
         // $denda = DB::table('denda')->get();
         $denda = Denda::join('reservasi', 'denda.reservasi_id', '=', 'reservasi.id')
         -> join('pelanggan', 'reservasi.pelanggan_id', '=', 'pelanggan.id')
-        -> select('denda.id', 'denda.keterangan', 'pelanggan.nama as pelanggan')
+        -> select('denda.*', 'pelanggan.nama as pelanggan')
         -> get();
         return new ResponsResource(true, 'Data Denda', $denda);
     }
@@ -61,10 +61,10 @@ class DendaController extends Controller
     {
         //
         $denda = Denda::join('reservasi', 'denda.reservasi_id', '=', 'reservasi.id')
-    -> join('pelanggan', 'reservasi.pelanggan_id', '=', 'pelanggan.id')
-    -> select('denda.id', 'denda.keterangan', 'pelanggan.nama as pelanggan')
-    -> where('denda.id', $id)
-    -> get();
+        -> join('pelanggan', 'reservasi.pelanggan_id', '=', 'pelanggan.id')
+        -> select('denda.id', 'denda.keterangan', 'pelanggan.nama as pelanggan')
+        -> where('denda.id', $id)
+        -> get();
         return new ResponsResource(true, 'Detail data denda', $denda);
     }
 
@@ -74,6 +74,12 @@ class DendaController extends Controller
     public function edit(string $id)
     {
         //
+        $denda = Denda::join('reservasi', 'denda.reservasi_id', '=', 'reservasi.id')
+        -> join('pelanggan', 'reservasi.pelanggan_id', '=', 'pelanggan.id')
+        -> select('denda.id', 'denda.keterangan','denda.reservasi_id', 'pelanggan.nama')
+        -> where('denda.id', $id)
+        -> get();
+        return new ResponsResource(true, 'Detail data denda', $denda);
     }
 
     /**
@@ -84,7 +90,7 @@ class DendaController extends Controller
         //
             $validator = Validator::make($request->all(), [
             'keterangan' => 'required',
-            'reservasi_id' => $request->reservasi_id,
+            'reservasi_id' => 'required|exists:reservasi,id',
         ]);
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);

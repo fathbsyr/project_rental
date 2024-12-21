@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Ulasan;
+use App\Models\Pelanggan;
 use App\Http\Resources\ResponsResource;
 use Illuminate\Support\Facades\Validator;
 use DB;
@@ -18,7 +19,8 @@ class UlasanController extends Controller
         //
         // $ulasan = DB::table('ulasan')->get();
         $ulasan = Ulasan::join('pelanggan', 'ulasan.pelanggan_id', '=', 'pelanggan.id')
-        -> select('ulasan.id','ulasan.komentar', 'pelanggan.nama as pelanggan')
+        // -> select('ulasan.id','ulasan.komentar', 'pelanggan.nama as pelanggan')
+        ->select('ulasan.*', 'pelanggan.nama as pelanggan')
         -> get();
         return new ResponsResource(true, 'Data Ulasan', $ulasan);
     }
@@ -73,6 +75,11 @@ class UlasanController extends Controller
     public function edit(string $id)
     {
         //
+        $ulasan = Ulasan::join('pelanggan', 'ulasan.pelanggan_id', '=', 'pelanggan.id')
+        ->select('ulasan.id', 'ulasan.komentar', 'ulasan.pelanggan_id', 'pelanggan.nama')
+        ->where('ulasan.id', $id)
+        ->get();    
+        return new ResponsResource(true, 'Data Ulasan', $ulasan);
     }
 
     /**

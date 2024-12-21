@@ -49,6 +49,7 @@ Route::middleware(['auth:admin', 'admin-only'])->group(function () {
     Route::post('/denda/create', [DendaController::class, 'store']);
     Route::put('/denda/{id}', [DendaController::class, 'update']);
     Route::delete('/denda/{id}', [DendaController::class, 'destroy']);
+    Route::get('/denda-edit/{id}', [DendaController::class, 'edit']);
 
     //pembayaran
     Route::get('/pembayaran', [PembayaranController::class, 'index']);
@@ -61,6 +62,7 @@ Route::middleware(['auth:admin', 'admin-only'])->group(function () {
     Route::post('/promosi/create', [PromosiController::class, 'store']);
     Route::put('/promosi/{id}', [PromosiController::class, 'update']);
     Route::delete('/promosi/{id}', [PromosiController::class, 'destroy']);
+    Route::get('/promosi-edit/{id}', [PromosiController::class, 'edit']);
 
     //pelanggan
     Route::get('/pelanggan', [PelangganController::class, 'index']);
@@ -76,6 +78,7 @@ Route::middleware(['admin-pelanggan'])->group(function () {
     Route::post('/ulasan/create', [UlasanController::class, 'store']);
     Route::put('/ulasan/{id}', [UlasanController::class, 'update']);
     Route::delete('/ulasan/{id}', [UlasanController::class, 'destroy']);
+    Route::get('/ulasan-edit/{id}', [UlasanController::class, 'edit']);
 
     //reservasi
     Route::get('/reservasi', [ReservasiController::class, 'index']);
