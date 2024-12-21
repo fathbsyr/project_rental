@@ -43,6 +43,7 @@ Route::middleware(['auth:admin', 'admin-only'])->group(function () {
     Route::post('/mobil/create', [MobilController::class, 'store']);
     Route::put('/mobil/{id}', [MobilController::class, 'update']);
     Route::delete('/mobil/{id}', [MobilController::class, 'destroy']);
+    Route::get('/mobil-edit/{id}', [MobilController::class, 'edit']);
 
     //denda
     Route::post('/denda/create', [DendaController::class, 'store']);

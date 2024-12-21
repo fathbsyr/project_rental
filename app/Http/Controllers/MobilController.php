@@ -74,6 +74,11 @@ class MobilController extends Controller
     public function edit(string $id)
     {
         //
+        $mobil = Mobil::select('brand', 'nama', 'harga', 'ketersediaan', 'deskripsi')
+        -> where('mobil.id', '=', $id)
+        -> get();
+
+        return new ResponsResource(true, 'Detail Mobil', $mobil);
     }
 
     /**
