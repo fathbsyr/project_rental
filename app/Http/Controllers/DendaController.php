@@ -39,41 +39,19 @@ class DendaController extends Controller
     public function store(Request $request)
     {
         //
-        // $validator = Validator::make($request->all(), [
-        //     'keterangan' => 'required',
-        //     'reservasi_id' => 'required|exists:reservasi,id',
-        // ]);
-        // if ($validator->fails()) {
-        //     return response()->json($validator->errors(),422);
-        // }
-        
-        // $denda = Denda::create([
-        //     'keterangan' => $request->keterangan,
-        //     'reservasi_id' => $request->reservasi_id,
-        // ]);
-        // return new ResponsResource(true, 'berhasil menambahkan data denda', $denda);
         $validator = Validator::make($request->all(), [
             'keterangan' => 'required',
-            'reservasi_id' => 'required|date', // Validasi tanggal
+            'reservasi_id' => 'required|exists:reservasi,id',
         ]);
-        
         if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
-        }
-        
-        // Misalnya, Anda ingin mencari `reservasi_id` berdasarkan tanggal yang diberikan
-        $reservasi = Reservasi::whereDate('tanggal_mulai', $request->reservasi_id)->first();
-        
-        if (!$reservasi) {
-            return response()->json(['error' => 'Reservasi tidak ditemukan untuk tanggal tersebut'], 404);
+            return response()->json($validator->errors(),422);
         }
         
         $denda = Denda::create([
             'keterangan' => $request->keterangan,
-            'reservasi_id' => $reservasi->id,  // Menggunakan ID dari data reservasi
+            'reservasi_id' => $request->reservasi_id,
         ]);
-        
-        return new ResponsResource(true, 'Berhasil menambahkan data denda', $denda);        
+        return new ResponsResource(true, 'berhasil menambahkan data denda', $denda);
     }
 
     /**

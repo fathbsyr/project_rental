@@ -18,7 +18,7 @@ class ReservasiController extends Controller
         //
         $reservasi = Reservasi::join('pelanggan', 'reservasi.pelanggan_id', '=', 'pelanggan.id')
         ->join('mobil', 'reservasi.mobil_id', '=', 'mobil.id')
-        -> select('reservasi.tanggal_mulai', 'reservasi.tanggal_akhir', 'reservasi.status', 'pelanggan.nama as pelanggan', 'mobil.nama as mobil')
+        -> select('reservasi.id','reservasi.tanggal_mulai', 'reservasi.tanggal_akhir', 'reservasi.status', 'pelanggan.nama as pelanggan', 'mobil.nama as mobil')
         -> get();
         return new ResponsResource(true, 'Data Reservasi', $reservasi);
     }
@@ -109,11 +109,15 @@ class ReservasiController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
-        $reservasi = Reservasi::whereId($id)->first();
+        $reservasi = Reservasi::find($id);
+    
+        if (!$reservasi) {
+            return response()->json(['success' => false, 'message' => 'Data tidak ditemukan'], 404);
+        }
+    
         $reservasi->delete();
-        return new ResponsResource(true, 'Berhasil Menghapus Data Reservasi', $reservasi);
+        return response()->json(['success' => true, 'message' => 'Data berhasil dihapus']);
     }
 }

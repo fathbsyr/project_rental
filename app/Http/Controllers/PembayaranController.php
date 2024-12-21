@@ -55,7 +55,8 @@ class PembayaranController extends Controller
             'tanggal_bayar' => 'required|date',
             'total_bayar' => 'required|numeric|min:0',
             'status' => 'required|string|max:20',
-            'reservasi_id' => 'required|date',  // Di sini tetap validasi tanggal
+            // 'reservasi_id' => 'required|date',  // Di sini tetap validasi tanggal
+            'reservasi_id' => 'required|exists:reservasi,id',
             'promosi_id' => 'nullable|numeric',
             'denda_id' => 'nullable|numeric'
         ]);
@@ -64,21 +65,13 @@ class PembayaranController extends Controller
             return response()->json($validator->errors(), 422);
         }
     
-        // Cari reservasi berdasarkan tanggal_mulai
-        $reservasi = Reservasi::where('tanggal_mulai', $request->reservasi_id)->first();
-    
-        // Jika reservasi tidak ditemukan
-        if (!$reservasi) {
-            return response()->json(['error' => 'Reservasi tidak ditemukan'], 404);
-        }
-    
         // Simpan pembayaran dengan reservasi_id yang benar
         $pembayaran = Pembayaran::create([
             'metode' => $request->metode,
             'tanggal_bayar' => $request->tanggal_bayar,
             'total_bayar' => $request->total_bayar,
             'status' => $request->status,
-            'reservasi_id' => $reservasi->id,  // Gunakan id reservasi yang ditemukan
+            'reservasi_id' => $request->reservasi_id,
             'promosi_id' => $request->promosi_id,
             'denda_id' => $request->denda_id
         ]);
