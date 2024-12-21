@@ -76,6 +76,11 @@ class PelangganController extends Controller
     public function edit(string $id)
     {
         //
+        $pelanggan = Pelanggan::select('nama','nik', 'email', 'password', 'no_hp', 'alamat_lengkap')
+        -> where('pelanggan.id', '=', $id)
+        -> get();
+
+        return new ResponsResource(true, 'Detail Pelanggan', $pelanggan);
     }
 
     /**

@@ -70,6 +70,7 @@ Route::middleware(['auth:admin', 'admin-only'])->group(function () {
     Route::post('/pelanggan/create', [PelangganController::class, 'store']);
     Route::put('/pelanggan/{id}', [PelangganController::class, 'update']);
     Route::delete('/pelanggan/{id}', [PelangganController::class, 'destroy']);
+    Route::get('/pelanggan-edit/{id}', [PelangganController::class, 'edit']);
 });
 
 // Middleware untuk pelanggan
