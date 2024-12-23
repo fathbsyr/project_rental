@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Reservasi;
+use App\Models\Mobil;
+use App\Models\Pelanggan;
 use App\Http\Resources\ResponsResource;
 use DB;
 use Illuminate\Support\Facades\Validator;
@@ -18,7 +20,7 @@ class ReservasiController extends Controller
         //
         $reservasi = Reservasi::join('pelanggan', 'reservasi.pelanggan_id', '=', 'pelanggan.id')
         ->join('mobil', 'reservasi.mobil_id', '=', 'mobil.id')
-        -> select('reservasi.id','reservasi.tanggal_mulai', 'reservasi.tanggal_akhir', 'reservasi.status', 'pelanggan.nama as pelanggan', 'mobil.nama as mobil')
+        -> select('reservasi.*', 'pelanggan.nama as pelanggan', 'mobil.nama as mobil')
         -> get();
         return new ResponsResource(true, 'Data Reservasi', $reservasi);
     }
@@ -64,7 +66,9 @@ class ReservasiController extends Controller
     public function show(string $id)
     {
         //
-        $reservasi = reservasi::select('tanggal_mulai', 'tanggal_akhir', 'status', 'pelanggan_id', 'mobil_id')
+        $reservasi = Reservasi::join('pelanggan', 'reservasi.pelanggan_id', '=', 'pelanggan.id')
+        ->join('mobil', 'reservasi.mobil_id', '=', 'mobil.id')
+        -> select('reservasi.id', 'tanggal_mulai', 'tanggal_akhir', 'status', 'pelanggan.nama as pelanggan', 'mobil.nama as mobil', 'pelanggan.id as pelanggan_id', 'mobil.id as mobil_id')
         -> where('reservasi.id', '=', $id)
         -> get();
 
@@ -77,6 +81,15 @@ class ReservasiController extends Controller
     public function edit(string $id)
     {
         //
+        $pelanggan = Pelanggan::all();
+        $mobil = Mobil::all();
+        $reservasi = Reservasi::join('pelanggan', 'reservasi.pelanggan_id', '=', 'pelanggan.id')
+        ->join('mobil', 'reservasi.mobil_id', '=', 'mobil.id')
+        -> select('reservasi.id', 'tanggal_mulai', 'tanggal_akhir', 'status', 'pelanggan.nama as pelanggan', 'mobil.nama as mobil', 'pelanggan.id as pelanggan_id', 'mobil.id as mobil_id')
+        -> where('reservasi.id', '=', $id)
+        -> get();
+
+        return new ResponsResource(true, 'Detail reservasi', $reservasi);
     }
 
     /**

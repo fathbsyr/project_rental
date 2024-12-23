@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Models\Pembayaran;
-use App\Models\Reservasi;
 use App\Http\Resources\ResponsResource;
 use DB;
 
@@ -21,11 +20,7 @@ class PembayaranController extends Controller
             ->leftJoin('promosi', 'pembayaran.promosi_id', '=', 'promosi.id')
             ->leftJoin('denda', 'pembayaran.denda_id', '=', 'denda.id')
             ->select(
-                'pembayaran.id',
-                'pembayaran.metode',
-                'pembayaran.tanggal_bayar',
-                'pembayaran.total_bayar',
-                'pembayaran.status',
+                'pembayaran.*',
                 'pelanggan.nama as pelanggan',
                 'promosi.diskon as diskon',
                 'denda.keterangan as denda'
@@ -112,8 +107,9 @@ class PembayaranController extends Controller
             ->join('promosi', 'pembayaran.promosi_id', '=', 'promosi.id')
             ->join('denda', 'pembayaran.denda_id', '=', 'denda.id')
             ->select('pembayaran.id', 'pembayaran.metode', 'pembayaran.tanggal_bayar',
-                     'pembayaran.total_bayar', 'pembayaran.status', 'pelanggan.nama as pelanggan',
-                     'promosi.diskon as diskon', 'denda.keterangan as denda')
+            'pembayaran.total_bayar', 'pembayaran.status', 'pelanggan.nama as pelanggan',
+            'promosi.id as promosi_id', 'promosi.diskon as diskon', 'reservasi.id as reservasi_id', 
+            'denda.id as denda_id', 'denda.keterangan as denda')
             ->where('pembayaran.id', $id)
             ->get();
 
