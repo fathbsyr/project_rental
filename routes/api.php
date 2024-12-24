@@ -65,7 +65,6 @@ Route::middleware(['auth:admin', 'admin-only'])->group(function () {
     Route::get('/promosi-edit/{id}', [PromosiController::class, 'edit']);
 
     //pelanggan
-    Route::get('/pelanggan', [PelangganController::class, 'index']);
     Route::get('/pelanggan/{id}', [PelangganController::class, 'show']);
     Route::post('/pelanggan/create', [PelangganController::class, 'store']);
     Route::put('/pelanggan/{id}', [PelangganController::class, 'update']);
@@ -105,6 +104,8 @@ Route::middleware(['admin-pelanggan'])->group(function () {
 
     Route::get('/pembayaran', [PembayaranController::class, 'index']);
     Route::get('/pembayaran/{id}', [PembayaranController::class, 'show']);
+
+    Route::get('/pelanggan', [PelangganController::class, 'index']);
 });
 
 Route::get('/mobil', [MobilController::class, 'index']);

@@ -60,7 +60,8 @@ class AuthPelangganController extends Controller
                 "token" => $token,
                 "name" => $pelanggan->nama,
                 "email" => $pelanggan->email,
-                "role"=> "pelanggan"
+                "role" => "pelanggan",
+                "pelanggan_id" => $pelanggan->id,  // Menambahkan id pelanggan
             ]);
         } else {
             return response()->json([
@@ -69,7 +70,7 @@ class AuthPelangganController extends Controller
                 "message" => "Login Failed"
             ]);
         }
-    }
+    }    
 
     public function forgotPassword(Request $request)
     {
