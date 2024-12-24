@@ -42,7 +42,7 @@ class ReservasiController extends Controller
         $validator = Validator::make($request->all(), [
             'tanggal_mulai' => 'required|date',
             'tanggal_akhir' => 'required|date|after_or_equal:tanggal_mulai',
-            'status' => 'required|string|in:pending,cancele,complete',
+            'status' => 'string|in:pending,cancele,complete',
             'pelanggan_id' => 'required|exists:pelanggan,id',
             'mobil_id' => 'required|exists:mobil,id',
         ]);
@@ -53,7 +53,7 @@ class ReservasiController extends Controller
         $reservasi = Reservasi::create([
             'tanggal_mulai' => $request->tanggal_mulai,
             'tanggal_akhir' => $request->tanggal_akhir,
-            'status' => $request->status,
+            // 'status' => $request->status,
             'pelanggan_id' => $request->pelanggan_id,
             'mobil_id' => $request->mobil_id    
         ]);
@@ -101,7 +101,7 @@ class ReservasiController extends Controller
         $validator = Validator::make($request->all(), [
             'tanggal_mulai' => 'required|date',
             'tanggal_akhir' => 'required|date|after_or_equal:tanggal_mulai',
-            'status' => 'required|string|in:pending,cancel,complete',
+            'status' => 'string|in:pending,cancel,complete',
             'pelanggan_id' => 'required|exists:pelanggan,id',
             'mobil_id' => 'required|exists:mobil,id',
         ]);
