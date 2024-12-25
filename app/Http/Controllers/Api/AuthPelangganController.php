@@ -39,6 +39,7 @@ class AuthPelangganController extends Controller
         $pelanggan = Pelanggan::create($input);
 
         return response()->json([
+            "code" => 200,
             "status" => "success",
             "message" => "Register Success", 
         ]);
