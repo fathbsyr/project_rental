@@ -64,8 +64,8 @@ class AuthAdminController extends Controller
         );
 
         return $status === Password::RESET_LINK_SENT
-            ? response()->json(['message' => __($status)])
-            : response()->json(['message' => __($status)], 500);
+        ? response()->json(['success' => true, 'message' => __($status)])
+        : response()->json(['success' => false, 'message' => __($status)], 500);
     }
 
     public function resetPassword(Request $request)
@@ -86,8 +86,8 @@ class AuthAdminController extends Controller
         );
 
         return $status === Password::PASSWORD_RESET
-            ? response()->json(['message' => __($status)])
-            : response()->json(['message' => __($status)], 500);
+        ? response()->json(['success' => true, 'message' => __($status)])
+        : response()->json(['success' => false, 'message' => __($status)], 500);
     }
 
     public function showResetForm(Request $request, $token)
