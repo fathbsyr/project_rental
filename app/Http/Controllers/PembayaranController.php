@@ -81,20 +81,22 @@ class PembayaranController extends Controller
     public function show(string $id)
     {
         $pembayaran = Pembayaran::join('reservasi', 'pembayaran.reservasi_id', '=', 'reservasi.id')
-            ->join('pelanggan', 'reservasi.pelanggan_id', '=', 'pelanggan.id')
-            ->join('promosi', 'pembayaran.promosi_id', '=', 'promosi.id')
-            ->join('denda', 'pembayaran.denda_id', '=', 'denda.id')
-            ->select('pembayaran.id', 'pembayaran.metode', 'pembayaran.tanggal_bayar',
-                     'pembayaran.total_bayar', 'pembayaran.status', 'pelanggan.nama as pelanggan',
-                     'promosi.diskon as diskon', 'denda.keterangan as denda')
-            ->where('pembayaran.id', $id)
-            ->get();
+        ->join('pelanggan', 'reservasi.pelanggan_id', '=', 'pelanggan.id')
+        ->leftJoin('promosi', 'pembayaran.promosi_id', '=', 'promosi.id')  // Left join untuk promosi
+        ->leftJoin('denda', 'pembayaran.denda_id', '=', 'denda.id')  // Left join untuk denda
+        ->select(
+            'pembayaran.id', 'pembayaran.metode', 'pembayaran.tanggal_bayar',
+            'pembayaran.total_bayar', 'pembayaran.status', 'pelanggan.nama as pelanggan',
+            'promosi.diskon as diskon', 'denda.keterangan as denda'
+        )
+        ->where('pembayaran.id', $id)
+        ->get();
 
-        if ($pembayaran) {
-            return new ResponsResource(true, 'Detail Pembayaran', $pembayaran);
-        } else {
+        if ($pembayaran->isEmpty()) {
             return new ResponsResource(false, 'Data Pembayaran Tidak Ditemukan', null);
         }
+
+        return new ResponsResource(true, 'Detail Pembayaran', $pembayaran);
     }
 
     /**
@@ -103,21 +105,23 @@ class PembayaranController extends Controller
     public function edit(string $id)
     {
         $pembayaran = Pembayaran::join('reservasi', 'pembayaran.reservasi_id', '=', 'reservasi.id')
-            ->join('pelanggan', 'reservasi.pelanggan_id', '=', 'pelanggan.id')
-            ->join('promosi', 'pembayaran.promosi_id', '=', 'promosi.id')
-            ->join('denda', 'pembayaran.denda_id', '=', 'denda.id')
-            ->select('pembayaran.id', 'pembayaran.metode', 'pembayaran.tanggal_bayar',
+        ->join('pelanggan', 'reservasi.pelanggan_id', '=', 'pelanggan.id')
+        ->leftJoin('promosi', 'pembayaran.promosi_id', '=', 'promosi.id')  // Left join untuk promosi
+        ->leftJoin('denda', 'pembayaran.denda_id', '=', 'denda.id')  // Left join untuk denda
+        ->select(
+            'pembayaran.id', 'pembayaran.metode', 'pembayaran.tanggal_bayar',
             'pembayaran.total_bayar', 'pembayaran.status', 'pelanggan.nama as pelanggan',
             'promosi.id as promosi_id', 'promosi.diskon as diskon', 'reservasi.id as reservasi_id', 
-            'denda.id as denda_id', 'denda.keterangan as denda')
-            ->where('pembayaran.id', $id)
-            ->get();
+            'denda.id as denda_id', 'denda.keterangan as denda'
+        )
+        ->where('pembayaran.id', $id)
+        ->get();
 
-        if ($pembayaran) {
-            return new ResponsResource(true, 'Detail Pembayaran', $pembayaran);
-        } else {
+        if ($pembayaran->isEmpty()) {
             return new ResponsResource(false, 'Data Pembayaran Tidak Ditemukan', null);
         }
+
+        return new ResponsResource(true, 'Detail Pembayaran', $pembayaran);
     }
 
     /**
