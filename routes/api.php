@@ -11,6 +11,7 @@ use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\PromosiController;
 use App\Http\Controllers\Api\AuthAdminController;
 use App\Http\Controllers\Api\AuthPelangganController;
+use App\Http\Controllers\BrandController;
 
 // Route::get('/user', function (Request $request) {
 //     return $request->user();
@@ -70,6 +71,12 @@ Route::middleware(['auth:admin', 'admin-only'])->group(function () {
     Route::put('/pelanggan/{id}', [PelangganController::class, 'update']);
     Route::delete('/pelanggan/{id}', [PelangganController::class, 'destroy']);
     Route::get('/pelanggan-edit/{id}', [PelangganController::class, 'edit']);
+
+    //brand
+    Route::get('/brand-edit/{id}', [BrandController::class, 'edit']);
+    Route::post('/brand/create', [BrandController::class, 'store']);
+    Route::put('/brand/{id}', [BrandController::class, 'update']);
+    Route::delete('/brand/{id}', [BrandController::class, 'destroy']);
 });
 
 // Middleware untuk pelanggan
@@ -107,6 +114,9 @@ Route::middleware(['admin-pelanggan'])->group(function () {
 
     Route::get('/pelanggan', [PelangganController::class, 'index']);
 });
+
+Route::get('/brand', [BrandController::class, 'index']);
+Route::get('/brand/{id}', [BrandController::class, 'show']);
 
 Route::get('/mobil', [MobilController::class, 'index']);
 Route::get('/mobil/{id}', [MobilController::class, 'show']);

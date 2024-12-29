@@ -17,7 +17,9 @@ class MobilController extends Controller
     {
         //
         // $mobil = DB::table('mobil')->get();
-        $mobil = Mobil::all();
+        $mobil = Mobil::join('brand', 'mobil.brand_id', '=', 'brand.id')
+        -> select('mobil.*', 'brand.name as brand')
+        -> get();
         return new ResponsResource(true, 'Data Mobil', $mobil);
     }
 
@@ -36,7 +38,7 @@ class MobilController extends Controller
     {
         //
         $validator = Validator::make($request->all(), [
-            'brand' => 'required',
+            'brand_id' => 'required|exists:brand,id',
             'nama' => 'required',
             'harga' => 'required|numeric|gte:10000000',
             'ketersediaan' => 'required|in:tersedia,kosong',
@@ -46,7 +48,7 @@ class MobilController extends Controller
         }
 
         $mobil = Mobil::create([
-            'brand' => $request->brand,
+            'brand_id' => $request->brand_id,
             'nama' => $request->nama,
             'harga' => $request->harga,
             'ketersediaan' => $request->ketersediaan,
@@ -61,11 +63,12 @@ class MobilController extends Controller
     public function show(string $id)
     {
         //
-        $mobil = Mobil::select('brand', 'nama', 'harga', 'ketersediaan', 'deskripsi')
+        $mobil = Mobil::join('brand', 'mobil.brand_id', '=', 'brand.id')
+        -> select('mobil.*', 'brand.name as brand')
         -> where('mobil.id', '=', $id)
         -> get();
 
-        return new ResponsResource(true, 'Detail Mobil', $mobil);
+        return new ResponsResource(true, 'Data Mobil', $mobil);
     }
 
     /**
@@ -74,7 +77,8 @@ class MobilController extends Controller
     public function edit(string $id)
     {
         //
-        $mobil = Mobil::select('brand', 'nama', 'harga', 'ketersediaan', 'deskripsi')
+        $mobil = Mobil::join('brand', 'mobil.brand_id', '=', 'brand.id')
+        -> select('mobil.*', 'brand.name as brand')
         -> where('mobil.id', '=', $id)
         -> get();
 
@@ -88,7 +92,7 @@ class MobilController extends Controller
     {
         //
         $validator = Validator::make($request->all(), [
-            'brand' => 'required',
+            'brand_id' => 'required|exists:brand,id',
             'nama' => 'required',
             'harga' => 'required|numeric|gte:10000000',
             'ketersediaan' => 'required|in:tersedia,kosong',
@@ -98,7 +102,7 @@ class MobilController extends Controller
         }
 
         $mobil = Mobil::whereId($id)->update([
-            'brand' => $request->brand,
+            'brand_id' => $request->brand_id,
             'nama' => $request->nama,
             'harga' => $request->harga,
             'ketersediaan' => $request->ketersediaan,

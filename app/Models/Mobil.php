@@ -8,6 +8,6 @@ class Mobil extends Model
 {
     //
     protected $table = 'mobil';
-    protected $fillable = ['brand', 'nama', 'harga', 'ketersediaan', 'deskripsi'];
+    protected $fillable = ['brand_id', 'nama', 'harga', 'ketersediaan', 'deskripsi'];
     public $timestamps = false;
 }
